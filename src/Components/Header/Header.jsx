@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Picture from '../../assets/20231021_120024_0000.png';
+import Picture from '../../assets/Logo/creative-vector-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mo-107388687.webp';
+import { userContext } from '../../AuthContext/AuthContext';
 
 const Header = () => {
+    const {user, logout} = useContext(userContext);
+
     return (
         <header className="container mx-auto">
             <div className="navbar bg-base-100 rounded">
@@ -21,23 +24,25 @@ const Header = () => {
                 <div className="navbar-center">
                     <Link to="/" className="btn btn-ghost text-xl">Auth Master</Link>
                 </div>
-                <div className="navbar-end">
+                {
+                    user && <div className="navbar-end">
                     <div className="bg-base-100">
                         <div className="dropdown dropdown-end">
                             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
-                                <img alt="Tailwind CSS Navbar component" src={Picture} />
+                                <img alt="Tailwind CSS Navbar component" src={`${user && user.photoURL ? user.photoURL : Picture}`} />
                                 </div>
                             </div>
                             <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
                                 <li><Link>Profile
                                     <span className="badge">New</span></Link></li>
                                 <li><Link>Settings</Link></li>
-                                <li><Link>Logout</Link></li>
+                                <li onClick={logout}><Link>Logout</Link></li>
                             </ul>
                         </div>
                     </div>
-                </div>
+                    </div>
+                }
             </div>
         </header>
     );

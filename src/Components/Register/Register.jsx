@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 const Register = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
-    const {authEmailAndPassword, authName} = useContext(userContext);
+    const {authEmailAndPassword, authName, googleProvider} = useContext(userContext);
 
     const show = () => {
         type === "password" ? setType("text") : setType("password");
@@ -40,10 +40,22 @@ const Register = () => {
         // Auth Name
         authName(name)
         .then(result => {
-            console.log(result,"Name SuccesFull Added");
+            console.log(result,"Name SuccessFull Added");
         })
         .catch(error => {
             console.log(error.message);
+        })
+
+    }
+    // GoogleAuthProvider
+    const googleAuth = () => {
+        googleProvider()
+        .then(() => {
+            toastSuccess('Sing Up SuccessFull')
+            
+        })
+        .catch(error => {
+            toastError(error.message.substr(10))
         })
     }
     return (
@@ -129,7 +141,7 @@ const Register = () => {
                         <div className='border w-1/4'></div>
                     </div>
                     <div className='flex gap-5 mt-5'>
-                        <button className="flex justify-center items-center gap-3 text-white font-medium bg-red-500 py-[8px] w-1/2 rounded-md">
+                        <button onClick={googleAuth} className="flex justify-center items-center gap-3 text-white font-medium bg-red-500 py-[8px] w-1/2 rounded-md">
                             <i className="fa-brands fa-google text-white"></i>
                             Google
                         </button>
