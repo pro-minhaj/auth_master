@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { userContext } from '../../AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
+    const {authSingIn} = useContext(userContext);
 
+    // Show Password
     const show = () => {
         type === "password" ? setType("text") : setType("password");
         icon === "fa-solid fa-eye"
           ? setIcon("fa-solid fa-eye-slash")
           : setIcon("fa-solid fa-eye");
       };
+
+    // Toast
+    const toastSuccess = (success) => toast.success(success);
+    const toastError = (error) => toast.error(error);
+  
+    // Handle Sing In 
+    const handleSingIn = event => {
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        // Auth
+        authSingIn(email, password)
+        .then(result => {
+            form.reset();
+            toastSuccess('Login SuccessFull');
+        })
+        .catch(error => {
+            toastError(error.message.substr(10));
+        })
+    }
 
     return (
         <div className="container mx-auto">
@@ -26,7 +52,7 @@ const Login = () => {
                 </h2>
                 </div>
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6">
+                <form onSubmit={handleSingIn} className="space-y-6">
                     <div>
                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                         Email address

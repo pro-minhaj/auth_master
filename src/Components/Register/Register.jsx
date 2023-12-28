@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { userContext } from '../../AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const Register = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
+    const {authEmailAndPassword, authName} = useContext(userContext);
 
     const show = () => {
         type === "password" ? setType("text") : setType("password");
@@ -11,6 +14,38 @@ const Register = () => {
           ? setIcon("fa-solid fa-eye-slash")
           : setIcon("fa-solid fa-eye");
       };
+
+    // Toast
+    const toastSuccess = (success) => toast.success(success);
+    const toastError = (error) => toast.error(error);
+
+    const handleSingUp = event => {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        // Auth Email And Password
+        authEmailAndPassword(email, password)
+        .then(result => {
+            console.log(result.user);
+            toastSuccess('Sing Up SuccessFull');
+            form.reset();
+        })
+        .catch(error => {
+            toastError(error.message.substr(10));
+        })
+
+        // Auth Name
+        authName(name)
+        .then(result => {
+            console.log(result,"Name SuccesFull Added");
+        })
+        .catch(error => {
+            console.log(error.message);
+        })
+    }
     return (
         <div>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -25,7 +60,7 @@ const Register = () => {
                 </h2>
                 </div>
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6">
+                <form onSubmit={handleSingUp} className="space-y-6">
                     <div>
                     <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                         Name
@@ -87,7 +122,23 @@ const Register = () => {
                     </button>
                     </div>
                 </form>
-
+                <div className='my-7'>
+                    <div className="flex justify-between items-center">
+                        <div className='border w-1/4'></div>
+                        <p className='text-black text-center'>Or continue with</p>
+                        <div className='border w-1/4'></div>
+                    </div>
+                    <div className='flex gap-5 mt-5'>
+                        <button className="flex justify-center items-center gap-3 text-white font-medium bg-red-500 py-[8px] w-1/2 rounded-md">
+                            <i className="fa-brands fa-google text-white"></i>
+                            Google
+                        </button>
+                        <button className="flex justify-center items-center gap-3 text-white font-medium bg-black py-[8px] w-1/2 rounded-md">
+                        <i className="fa-brands fa-github"></i>
+                            GitHub
+                        </button>
+                    </div>
+                </div>
                 <p className="mt-10 text-center text-sm text-gray-500">
                     Already Account?{' '}
                     <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
