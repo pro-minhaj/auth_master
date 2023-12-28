@@ -19,6 +19,7 @@ const Login = () => {
     // Toast
     const toastSuccess = (success) => toast.success(success);
     const toastError = (error) => toast.error(error);
+    const toastLoading = () => toast.loading('Loading');
   
     // Handle Sing In 
     const handleSingIn = event => {
@@ -36,6 +37,7 @@ const Login = () => {
         .catch(error => {
             toastError(error.message.substr(10));
         })
+        
     }
 
     return (

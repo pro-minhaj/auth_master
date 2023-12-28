@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { userContext } from '../../AuthContext/AuthContext';
 import toast from 'react-hot-toast';
+import Home from '../Home/Home';
 
 const Register = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
-    const {authEmailAndPassword, authName, googleProvider} = useContext(userContext);
+    const {authEmailAndPassword, authName, googleProvider, githubProvider} = useContext(userContext);
 
     const show = () => {
         type === "password" ? setType("text") : setType("password");
@@ -53,6 +54,17 @@ const Register = () => {
         .then(() => {
             toastSuccess('Sing Up SuccessFull')
             
+        })
+        .catch(error => {
+            toastError(error.message.substr(10))
+        })
+    }
+
+    // GitHubAuthProvider
+    const githubAuth = () => {
+        githubProvider()
+        .then(() => {
+            toastSuccess('Sing Up SuccessFull')
         })
         .catch(error => {
             toastError(error.message.substr(10))
@@ -145,7 +157,7 @@ const Register = () => {
                             <i className="fa-brands fa-google text-white"></i>
                             Google
                         </button>
-                        <button className="flex justify-center items-center gap-3 text-white font-medium bg-black py-[8px] w-1/2 rounded-md">
+                        <button onClick={githubAuth} className="flex justify-center items-center gap-3 text-white font-medium bg-black py-[8px] w-1/2 rounded-md">
                         <i className="fa-brands fa-github"></i>
                             GitHub
                         </button>

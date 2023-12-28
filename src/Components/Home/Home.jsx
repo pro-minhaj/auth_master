@@ -15,7 +15,6 @@ const Home = () => {
         <div className="container mx-auto">
             {
                 user && <div className='w-1/2 mx-auto my-16 shadow-xl shadow-slate-300 p-10 rounded-lg flex flex-col items-center gap-4'>
-                    <h2 className='text-lg text-black'>Name: {user && user.displayName ? <span>{user.displayName}</span> : <span>No Set Name</span>}</h2>
                     <h4 className='text-lg text-black'>Email: {user && <span>{user.email}</span>}</h4>
                     <h6>{user.metadata.creationTime}</h6>
                     <h6>{user.metadata.lastSignInTime}</h6>
