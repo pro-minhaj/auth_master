@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { userContext } from '../../AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const Home = () => {
     const {user, logout} = useContext(userContext);

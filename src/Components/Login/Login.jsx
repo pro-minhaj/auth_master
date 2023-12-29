@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { userContext } from '../../AuthContext/AuthContext';
 import toast from 'react-hot-toast';
 
 const Login = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
-    const {authSingIn} = useContext(userContext);
+    const {authSingIn, user} = useContext(userContext);
 
     // Show Password
     const show = () => {
@@ -19,7 +19,6 @@ const Login = () => {
     // Toast
     const toastSuccess = (success) => toast.success(success);
     const toastError = (error) => toast.error(error);
-    const toastLoading = () => toast.loading('Loading');
   
     // Handle Sing In 
     const handleSingIn = event => {
@@ -33,6 +32,7 @@ const Login = () => {
         .then(result => {
             form.reset();
             toastSuccess('Login SuccessFull');
+        
         })
         .catch(error => {
             toastError(error.message.substr(10));
@@ -42,6 +42,9 @@ const Login = () => {
 
     return (
         <div className="container mx-auto">
+            {
+                user && <Navigate to="/" replace={true}></Navigate>
+            }
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img

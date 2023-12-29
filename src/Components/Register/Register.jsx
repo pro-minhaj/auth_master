@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { userContext } from '../../AuthContext/AuthContext';
 import toast from 'react-hot-toast';
 import Home from '../Home/Home';
@@ -7,7 +7,7 @@ import Home from '../Home/Home';
 const Register = () => {
     const [type, setType] = useState("password");
     const [icon, setIcon] = useState("fa-solid fa-eye-slash");
-    const {authEmailAndPassword, authName, googleProvider, githubProvider} = useContext(userContext);
+    const {authEmailAndPassword, authName, googleProvider, githubProvider, user} = useContext(userContext);
 
     const show = () => {
         type === "password" ? setType("text") : setType("password");
@@ -72,6 +72,9 @@ const Register = () => {
     }
     return (
         <div>
+            {
+                user && <Navigate to="/login" replace={true}></Navigate>
+            }
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
